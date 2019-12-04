@@ -311,6 +311,9 @@ if(PULP_SECURE==1) begin
                                   2'h0,
                                   mstatus_q.uie
                                 };
+	//misa adding for debug
+	12'h301: csr_rdata_int = 32'h40001104; //rv32imc
+	//end misa adding for debug
       // mtvec: machine trap-handler base address
       12'h305: csr_rdata_int = {mtvec_q, 6'h0, MTVEC_MODE};
       // mscratch: machine scratch
@@ -395,7 +398,10 @@ end else begin //PULP_SECURE == 0
                                   mstatus_q.uie
                                 };
       //misa: (no allocated ID yet)
-      12'h301: csr_rdata_int = 32'h0;
+      //12'h301: csr_rdata_int = 32'h0;
+	//misa adding for debug
+	12'h301: csr_rdata_int = 32'h40001104; //rv32imc
+	//end misa adding for debug
       // mtvec: machine trap-handler base address
       12'h305: csr_rdata_int = {mtvec_q, 6'h0, MTVEC_MODE};
       // mscratch: machine scratch
@@ -462,6 +468,9 @@ if(PULP_SECURE==1) begin
     pmp_reg_n.pmpcfg_packed  = pmp_reg_q.pmpcfg_packed;
     pmpaddr_we               = '0;
     pmpcfg_we                = '0;
+    // MODIF debug
+    dcsr_n.xdebugver=4'h4;
+    // END MODIF debug
 
     if (FPU == 1) if (fflags_we_i) fflags_n = fflags_i | fflags_q;
 
@@ -718,7 +727,9 @@ end else begin //PULP_SECURE == 0
     pmp_reg_n.pmpcfg_packed  = pmp_reg_q.pmpcfg_packed;
     pmpaddr_we               = '0;
     pmpcfg_we                = '0;
-
+    // MODIF debug
+    dcsr_n.xdebugver=4'h4;
+    // END MODIF debug
 
     if (FPU == 1) if (fflags_we_i) fflags_n = fflags_i | fflags_q;
 
